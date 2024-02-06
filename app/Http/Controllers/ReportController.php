@@ -5,30 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Publication;
 use App\Models\Report;
-
+use App\Http\Requests\ReportRequest;
+use Illuminate\Support\Facades\Cookie;
 class ReportController extends Controller
 {
-    //
-    public function store(Publication $publication)
+    
+    public function store(ReportRequest $request, Publication $publication)
 {
-    //this mehtode will create a report on its first click delete it on the second click
     $user = auth()->user();
-    //look for existing report
+
+    // Look for an existing report
     $existingReport = Report::where('user_id', $user->id)
         ->where('publication_id', $publication->id)
         ->first();
-    //if there is delete it
+
+    // If there is an existing report, set a cookie
     if ($existingReport) {
-        $existingReport->delete();
-    } else {
-        //create anew report
-        $report = Report::create([
-            'user_id' => $user->id,
-            'publication_id' => $publication->id,
-        ]);
+        
+        return redirect()->back()->with('reported', true);
     }
 
-    return redirect()->back();
+    // Create a new report
+    Report::create([
+        'user_id' => $user->id,
+        'publication_id' => $publication->id,
+        'reason' => $request->input('reason'),
+    ]);
+
+    $expiration = 60 * 24 * 365; // 1 year in minutes
+    cookie()->queue('reported_' . $publication->id.$user->id, true, $expiration); 
+    return redirect()->back()->with('success', 'Post reported successfully.')->with('message', 'Reported');
 }
 
 }

@@ -28,6 +28,8 @@ class PublicationController extends Controller
     }
     public function destroy(Publication $publication)
     {
+        $publication->likes()->delete();
+        $publication->reports()->delete();
         $publication->delete();
         
         return redirect('/home')->with('deleted', true);

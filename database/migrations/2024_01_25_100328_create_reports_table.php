@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('publication_id');
+            $table->text('reason');
             $table->timestamps();
         });
     }
