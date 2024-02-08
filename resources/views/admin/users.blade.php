@@ -10,10 +10,10 @@
                     <a class="nav-link" href="{{ route('adminHome') }}">Statistics</a>
                   </li>
                 <li class="nav-item">
-                  <a class="nav-link active" href="{{ route('admin.users') }}">Users</a>
+                  <a class="nav-link active" href="{{ route('adminHome.users') }}">Users</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ route('admin.reports') }}">Reports</a>
+                  <a class="nav-link" href="{{ route('adminHome.reports') }}">Reports</a>
                 </li>
               </ul>
             </div>
@@ -95,17 +95,28 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Current Role: {{ $user->role }}</p>
-                                        <form action="/admin/users/{{$user->id}}/changeRoles" method="POST">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label for="newRole">New Role:</label>
-                                                <select class="form-control" id="newRole" name="newRole">
-                                                    <option value="admin">Admin</option>
-                                                    <option value="user">User</option>
-                                                </select>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p><strong>Current Role:</strong> <mark>{{ $user->role }}</mark></p>
+                                                </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <form action="/adminHome/users/{{$user->id}}/changeRoles" method="POST">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label for="newRole">New Role:</label>
+                                                            <select class="form-control" id="newRole" name="newRole">
+                                                                <option value="admin">Admin</option>
+                                                                <option value="user">User</option>
+                                                            </select>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-primary">Save</button>

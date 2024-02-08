@@ -10,6 +10,7 @@ use App\Models\Like;
 use App\Models\Report;
 class AdminController extends Controller
 {
+    
     public function deleteUser(User $user)
     {
         
@@ -21,14 +22,21 @@ class AdminController extends Controller
         }
         $user->publications()->delete();
         $user->delete();
-        return redirect('/admin/users')->with('deleted', true);
+        return redirect('/adminHome/users')->with('deleted', true);
     }
     public function deletePub(Publication $publication)
     {
-        $publication->likesCount()->delete();
-        $publication->reportsCount()->delete();
+        if($publication->likes()->exists()){
+            $publication->likes()->delete();
+        }
+        if($publication->reports()->exists()){
+            $publication->reports()->delete();
+        }
+        if($publication->comments()->exists()){
+            $publication->comments()->delete();
+        }
         $publication->delete();
-        return redirect('/admin/reportsCount')->with('deleted', true);
+        return redirect('/adminHome/reports')->with('deleted', true);
     }
     public function ChangeRoles(User $user)
     {
@@ -41,16 +49,7 @@ class AdminController extends Controller
         $user->save();
         $users = User::withCount('publications')->latest()->paginate(10);
         
-        return view('/admin/users',compact('users'));
+        return redirect('/adminHome/users');
     }
-    public function chartData()
-    {
-        $commentsCount = Comment::count();
-        $likesCount = Like::count();
-        $reportsCount = Report::count();
-        $usersCount = User::count();
-        $reportsCount = Report::count();
-        return response()->json(compact('commentsCount','likesCount','reportsCount','usersCount'));
-
-    }
+    
 }

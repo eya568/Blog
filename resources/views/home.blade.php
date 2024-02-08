@@ -1,4 +1,5 @@
 @extends('layouts.app')
+<p style="background-image: url('https://images.pexels.com/photos/5112009/pexels-photo-5112009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
 
 @section('content')
     <div class="container">
@@ -68,8 +69,16 @@
                                     Comments <span class="">{{ count($publication->comments) }}</span>
                                 </a>
                             </div>
-        
+                        
                             <div class="collapse" id="commentsCollapse{{$publication->id}}">
+                                <form id="addComment" action="/publications/{{$publication->id}}/comments" method="POST" class="mt-2">
+                                    @csrf
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control" id="comment" name="content" placeholder="Add a comment" required style="height: 30px;">
+                                        <button type="submit" class="btn btn-primary btn-sm ml-2" style="height: 30px;">Post</button>
+                                    </div>
+                                </form>
+                        
                                 <ul class="list-group list-unstyled mt-2">
                                     @forelse($publication->comments as $comment)
                                         <li class="list-group-item">
@@ -80,21 +89,14 @@
                                     @endforelse
                                 </ul>
                             </div>
-        
-                            <form id="addComment" action="/publications/{{$publication->id}}/comments" method="POST" class="mt-2">
-                                @csrf
-                                <div class="d-flex">
-                                    <input type="text" class="form-control" id="comment" name="content" placeholder="Add a comment" required style="height: 30px;">
-                                    <button type="submit" class="btn btn-primary btn-sm ml-2" style="height: 30px;">Post</button>
-                                </div>
-                            </form>
                         </div>
+                        
                     </div>
                 @empty
                     <div class="card mb-3">
                         <div class="card-header">Posts</div>
                         <div class="card-content">
-                            <p>This user didn't post anything yet</p>
+                            <p class="p-3"> You haven't posted yet</p>
                         </div>
                     </div>
                 @endforelse

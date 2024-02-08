@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+   
     <meta charset="utf8mb4">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -46,55 +47,7 @@
     
         <script src="https://kit.fontawesome.com/3b0ad92508.js" crossorigin="anonymous"></script>
     
-        <!--charts-->
-    
-        <!--Load the AJAX API-->
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
-        
-            function drawChart() {
-                $(document).ready(function() {
-                    $.ajax({
-                        url: "{{ route('admin.chartData') }}", 
-                        method: "GET",
-                        success: function(response) {
-                            var commentsCount = response.commentsCount;
-                            var likesCount = response.likesCount;
-                            var postsCount = response.postsCount;
-                            var reportCount = response.reportsCount;
-        
-                            // Create the data table.
-                            var data = new google.visualization.DataTable();
-                            data.addColumn('string', 'Topping');
-                            data.addColumn('number', 'Slices');
-                            data.addRows([
-                                ['Likes', likesCount],
-                                ['Reports', reportCount],
-                                ['Posts', postsCount],
-                                ['Comments', commentsCount]
-                            ]);
-        
-                            // Set chart options
-                            var options = {
-                                'title': 'User Interaction with the Blog',
-                                'width': 400,
-                                'height': 300
-                            };
-        
-                            // Instantiate and draw the chart
-                            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-                            chart.draw(data, options);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                });
-            }
-        </script>
-        
+  
     
 </head>
 <body>
@@ -102,19 +55,17 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img class="h-25 w-25" src="{{ asset('images\icon.png') }}"  alt="img">
+                    <img class="h-25 w-25" src="{{ asset('images/icon.png') }}" alt="img">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+        
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
+                   
+        
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
@@ -123,40 +74,35 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
-                                
                             @endif
-
+        
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
-                        @if(Auth::user()->role =='admin')
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('adminHome')}}">dashboard</a>
-                            </li>
-                        </ul>
+                            @if(Auth::user()->role =='admin')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('adminHome')}}">dashboard</a>
+                                </li>
                             @else
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home')}}">profile</a>
-                            </li>
-                        </ul>
-                        @endif
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('home')}}">profile</a>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-
+        
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
+        
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -167,9 +113,11 @@
                 </div>
             </div>
         </nav>
+        
 
         <main class="py-4">
             @yield('content')
+            @yield('charts')
         </main>
     </div>
     @yield('scripts')

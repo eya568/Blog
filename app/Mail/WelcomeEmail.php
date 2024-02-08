@@ -9,10 +9,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class registerMail extends Mailable
+class WelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;
-
+     /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('mail.welcome-email')
+                    ->subject('Welcome to Our Website');
+    }
     /**
      * Create a new message instance.
      */
@@ -27,7 +36,7 @@ class registerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Register Mail',
+            subject: 'Welcome Email',
         );
     }
 
@@ -37,10 +46,10 @@ class registerMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.register-mail',
+            markdown: 'mail.welcome-email',
         );
     }
-
+    
     /**
      * Get the attachments for the message.
      *

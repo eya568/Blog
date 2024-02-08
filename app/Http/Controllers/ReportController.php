@@ -9,6 +9,10 @@ use App\Http\Requests\ReportRequest;
 use Illuminate\Support\Facades\Cookie;
 class ReportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     
     public function store(ReportRequest $request, Publication $publication)
 {

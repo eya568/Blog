@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Report;
+use DateTime;
 
 class HomeController extends Controller
 {
@@ -35,9 +36,35 @@ class HomeController extends Controller
         
         $publications = Publication::with('user')->latest()->paginate(10);
         $users = User::withCount('publications')->latest()->paginate(10);
-        return view('adminHome', compact('publications', 'users'));
-    } 
-    else
+        //todays data 
+        $ldate = new DateTime('today');
+        $commentsCount = Comment::whereDate('created_at', $ldate)->count();
+        $publicationsCount = Publication::whereDate('created_at', $ldate)->count();
+        $likesCount = Like::whereDate('created_at', $ldate)->count();
+        $reportsCount = Report::whereDate('created_at', $ldate)->count();
+        //total count
+        $commentsTotal = Comment::count();
+        $likesTotal = Like::count();
+        $reportsTotal = Report::count();
+        $publicationsTotal = Publication::count();
+
+    // Create an array to hold all the data
+    $data = [
+        'publications' => $publications,
+        'users' => $users,
+        'commentsCount' => $commentsCount,
+        'likesCount' => $likesCount,
+        'reportsCount' => $reportsCount,
+        'publicationsCount' => $publicationsCount,
+        'commentsTotal' => $commentsTotal,
+        'likesTotal' => $likesTotal,
+        'reportsTotal' => $reportsTotal,
+        'publicationsTotal' =>$publicationsTotal
+    ];
+
+    // Pass the data array to the view
+    return view('adminHome', compact('data'));
+} 
     {
         return view('home',compact('publications','user'));
     }

@@ -9,10 +9,10 @@
                         <a class="nav-link " href="{{ route('adminHome') }}">statistics</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.users') }}">Users</a>
+                        <a class="nav-link" href="{{ route('adminHome.users') }}">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('admin.reports') }}">Reports</a>
+                        <a class="nav-link active" href="{{ route('adminHome.reports') }}">Reports</a>
                     </li>
                 </ul>
             </div>

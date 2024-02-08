@@ -8,6 +8,8 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Mail\resetLink;
+use App\Mail\registerLink;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,9 +46,9 @@ Route::post('/publications/{publication}/likes',[LikeController::class, 'store']
 
 //admin
 Route::get('/adminHome',[HomeController::class,'index'])->name('adminHome')->middleware('role');
-Route::get('/admin/users',[HomeController::class,'usersList'])->name('admin.users');
-Route::get('/admin/reports',[HomeController::class,'reportsList'])->name('admin.reports');
+Route::get('/adminHome/users',[HomeController::class,'usersList'])->name('adminHome.users')->middleware('role');
+Route::get('/adminHome/reports',[HomeController::class,'reportsList'])->name('adminHome.reports')->middleware('role');
 Route::delete('/users/{user}',[AdminController::class, 'deleteUser']);
 Route::delete('/publications/{publication}',[AdminController::class, 'deletePub']);
-Route::post('/admin/users/{user}/changeRoles',[AdminController::class, 'ChangeRoles'])->name('admin.changeRoles');
-Route::get('/admin/chartData',[AdminController::class,'chartData'])->name('admin.chartData');
+Route::post('/adminHome/users/{user}/changeRoles',[AdminController::class, 'ChangeRoles'])->name('adminHome.changeRoles');
+//Route::get('/adminHome',[AdminController::class,'chartData'])->name('adminHome');

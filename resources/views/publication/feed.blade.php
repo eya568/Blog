@@ -24,15 +24,13 @@
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#reportModal{{$publication->id}}">
-                                    Report
+                                    @if(!Cookie::has('reported_' . $publication->id.$user->id))
+                                    <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                    @else
+                                    <i class="fa fa-flag " aria-hidden="true"></i>
+                                    @endif
                                 </button>
-                                <form id="addLike" action="/publications/{{$publication->id}}/likes" method="POST">
-                                    @csrf
-                                    <!-- Replace the Like button with an image -->
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        Like {{ count($publication->likes) }}
-                                    </button>
-                                </form>
+                                
                             </div>
                         </div>
 
@@ -47,12 +45,27 @@
                         </div>
 
                         <div class="card-footer">
-                            <div class="d-flex align-items-center">
-                                <a href="#commentsCollapse{{$publication->id}}" class="text-primary" data-toggle="collapse" aria-expanded="false" aria-controls="commentsCollapse{{$publication->id}}">
-                                    Comments <span class="">{{ count($publication->comments) }}</span>
-                                </a>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <a href="#commentsCollapse{{$publication->id}}" class="text-primary" data-toggle="collapse" aria-expanded="false" aria-controls="commentsCollapse{{$publication->id}}">
+                                        Comments <span class="">{{ count($publication->comments) }}</span>
+                                    </a>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <form id="addLike" action="/publications/{{$publication->id}}/likes" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn  btn-sm">
+                                            @if(app('App\Http\Controllers\LikeController')->hadLiked($publication)) 
+                                            {{ count($publication->likes) }}
+                                            <i class="fa fa-heart"  style="color:red" aria-hidden="true"></i>
+                                            @else
+                                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                            {{ count($publication->likes) }}
+                                            @endif
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-
                             <div class="collapse" id="commentsCollapse{{$publication->id}}">
                                 <ul class="list-group list-unstyled mt-2">
                                     @forelse($publication->comments as $comment)
@@ -63,16 +76,17 @@
                                         <li>No comments yet.</li>
                                     @endforelse
                                 </ul>
+                                <form id="addComment" action="/publications/{{$publication->id}}/comments" method="POST" class="mt-2">
+                                    @csrf
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control" id="comment" name="content" placeholder="Add a comment" required style="height: 30px;">
+                                        <button type="submit" class="btn btn-primary btn-sm ml-2" style="height: 30px;">Post</button>
+                                    </div>
+                                </form>
                             </div>
-
-                            <form id="addComment" action="/publications/{{$publication->id}}/comments" method="POST" class="mt-2">
-                                @csrf
-                                <div class="d-flex">
-                                    <input type="text" class="form-control" id="comment" name="content" placeholder="Add a comment" required style="height: 30px;">
-                                    <button type="submit" class="btn btn-primary btn-sm ml-2" style="height: 30px;">Post</button>
-                                </div>
-                            </form>
                         </div>
+                        
+                        
                     </div>
 
                     <!-- Report Form Modal -->

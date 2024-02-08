@@ -25,7 +25,17 @@ class LikeController extends Controller
             'publication_id' => $publication->id,
         ]);
         }
-        return redirect()->back();
+        return redirect()->back()->with('success','like created');
+    }
+    public function hadLiked(Publication $publication)
+    {
+        $user = auth()->user();
+        
+        $existingLike = Like::where('user_id', $user->id)
+            ->where('publication_id', $publication->id)
+            ->first();
+        
+        return $existingLike ? true : false;
     }
     
 }

@@ -8,6 +8,7 @@ use App\Http\Requests\StorePostRequest;
 
 class PublicationController extends Controller
 {
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -28,8 +29,15 @@ class PublicationController extends Controller
     }
     public function destroy(Publication $publication)
     {
-        $publication->likes()->delete();
-        $publication->reports()->delete();
+        if($publication->likes()->exists()){
+            $publication->likes()->delete();
+        }
+        if($publication->reports()->exists()){
+            $publication->reports()->delete();
+        }
+        if($publication->comments()->exists()){
+            $publication->comments()->delete();
+        }
         $publication->delete();
         
         return redirect('/home')->with('deleted', true);
