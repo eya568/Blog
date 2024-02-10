@@ -31,7 +31,7 @@ Route::get('/password/email', function () {
 
 
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/profile', [HomeController::class, 'indexProfile'])->name('profile');
 Route::get('/', [App\Http\Controllers\FeedController::class, 'index']);
 
 //publication
@@ -45,10 +45,9 @@ Route::post('/publications/{publication}/reports',[ReportController::class, 'sto
 Route::post('/publications/{publication}/likes',[LikeController::class, 'store']);
 
 //admin
-Route::get('/adminHome',[HomeController::class,'index'])->name('adminHome')->middleware('role');
+Route::get('/adminHome',[HomeController::class,'indexAdmin'])->name('adminHome')->middleware('role');
 Route::get('/adminHome/users',[HomeController::class,'usersList'])->name('adminHome.users')->middleware('role');
 Route::get('/adminHome/reports',[HomeController::class,'reportsList'])->name('adminHome.reports')->middleware('role');
 Route::delete('/users/{user}',[AdminController::class, 'deleteUser']);
-Route::delete('/publications/{publication}',[AdminController::class, 'deletePub']);
 Route::post('/adminHome/users/{user}/changeRoles',[AdminController::class, 'ChangeRoles'])->name('adminHome.changeRoles');
-//Route::get('/adminHome',[AdminController::class,'chartData'])->name('adminHome');
+Route::get('/adminHome/users/search',[AdminController::class,'searchUser']);

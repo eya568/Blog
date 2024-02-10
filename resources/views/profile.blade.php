@@ -1,5 +1,4 @@
 @extends('layouts.app')
-<p style="background-image: url('https://images.pexels.com/photos/5112009/pexels-photo-5112009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
 
 @section('content')
     <div class="container">

@@ -4,7 +4,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\contentRequest; 
+use App\Http\Requests\commentRequest; 
 use App\Models\Comment;
 use App\Models\Publication;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +17,14 @@ class CommentController extends Controller
         return view('publication.feed', compact('comments'));
     }
 
-    public function store(contentRequest $request,Publication $publication) 
+    public function store(commentRequest $request,Publication $publication) 
     {
         $comment = Comment::create([
             'content' => $request->input('content'),
             'user_id' => auth()->user()->id,
             'publication_id' => $publication->id,
         ]);
+        $request->session()->flash('status','The comment was created successfully');
         return redirect()->back();
     }
 }

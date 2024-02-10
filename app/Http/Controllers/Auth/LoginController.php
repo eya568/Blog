@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -50,7 +50,7 @@ class LoginController extends Controller
         if (auth()->user()->role == "admin") {
             return redirect('adminHome');
         } else {
-            return redirect('home');
+            return redirect('/');
         }
     } else {
         return redirect()->route('login')->with('error', 'Invalid credentials');

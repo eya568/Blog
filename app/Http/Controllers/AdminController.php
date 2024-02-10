@@ -24,20 +24,20 @@ class AdminController extends Controller
         $user->delete();
         return redirect('/adminHome/users')->with('deleted', true);
     }
-    public function deletePub(Publication $publication)
-    {
-        if($publication->likes()->exists()){
-            $publication->likes()->delete();
-        }
-        if($publication->reports()->exists()){
-            $publication->reports()->delete();
-        }
-        if($publication->comments()->exists()){
-            $publication->comments()->delete();
-        }
-        $publication->delete();
-        return redirect('/adminHome/reports')->with('deleted', true);
-    }
+    // public function deletePub(Publication $publication)
+    // {
+    //     if($publication->likes()->exists()){
+    //         $publication->likes()->delete();
+    //     }
+    //     if($publication->reports()->exists()){
+    //         $publication->reports()->delete();
+    //     }
+    //     if($publication->comments()->exists()){
+    //         $publication->comments()->delete();
+    //     }
+    //     $publication->delete();
+    //     return redirect()->back()->with('success', 'Publication deleted successfully.');
+    // }
     public function ChangeRoles(User $user)
     {
         if($user->role =="admin")
@@ -51,5 +51,19 @@ class AdminController extends Controller
         
         return redirect('/adminHome/users');
     }
+    public function searchUser(Request $request)
+{
+    $search = $request->input('search');
+    if ($search) {
+        $result = User::where('name', 'LIKE', '%' . $search . '%')->paginate(10);
+        return view('admin.search', compact('search', 'result'));
+    } else {
+        $users = User::withCount('publications')->latest()->paginate(10);
+        return view('admin.search', compact('users'));
+    }
+}
+
+    
+  
     
 }

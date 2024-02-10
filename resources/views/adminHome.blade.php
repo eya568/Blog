@@ -107,8 +107,8 @@
               <div class="card-body">
                 <div class="media d-flex">
                   <div class="media-body text-left">
-                    <h3 class="danger">{{$data['users']->count()}}</h3>
-                    <span>Users</span>
+                    <h3 class="danger">{{$data['usersTotal']}}</h3>
+                    <span>Total Users</span>
                   </div>
                   <div class="align-self-center">
                     <i class="fa fa-user-o danger" aria-hidden="true"></i>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="media-body">
                   <h4>Total Posts</h4>
-                  <span>Monthly blog posts</span>
+                  <span>The total number of Posts</span>
                 </div>
                 <div class="align-self-center">
                   <h1>{{$data['publicationsTotal']}}</h1>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="media-body">
                   <h4>Total Comments</h4>
-                  <span>Monthly blog comments</span>
+                  <span>The total number of Comments</span>
                 </div>
                 <div class="align-self-center"> 
                   <h1>{{$data['commentsTotal']}}</h1>
@@ -182,7 +182,14 @@
 <br>
              
               <!--Div that will hold the pie chart-->
-              <div id="piechart" style="width: 400px; height: 350px;"></div>
+              <div class="row">
+                <div id="piechart" style="width: 430px; height: 350px;"></div>
+                <div id="chart_div"  style="width:500px; height: 300px;" class="pr-3"></div>
+
+              </div>
+              
+             
+                  
             </div>
           </div>
     </div>
@@ -215,6 +222,44 @@
 
         chart.draw(data, options);
       }
+    </script>
+    <script>
+      google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+  var data = google.visualization.arrayToDataTable([
+        ['Genre', 'user', 'admin' ],
+        ['2022',  5, 1],
+        ['2023',  8, 1],
+        ['2024', {{$data['usersTotal']}}, {{$data['adminCount']}}]
+      ]);
+
+      var options = {
+        title: 'admmin/user',
+
+        width: 500,
+        height: 300,
+        legend: { position: 'top', maxLines: 3 },
+        bar: { groupWidth: '75%' },
+        isStacked: true,
+      };
+      var options_fullStacked = {
+          isStacked: 'percent',
+          legend: {position: 'top', maxLines: 3},
+          vAxis: {
+            minValue: 0,
+            ticks: [0, .3, .6, .9, 1]
+          }
+        };
+    
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
     </script>
  
 

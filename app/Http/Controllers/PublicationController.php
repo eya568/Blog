@@ -25,7 +25,7 @@ class PublicationController extends Controller
         $publication->content = $request->input('content');
         $publication->user_id = auth()->user()->id; 
         $publication->save();
-        return redirect('/home');
+        return redirect('/profile');
     }
     public function destroy(Publication $publication)
     {
@@ -40,7 +40,7 @@ class PublicationController extends Controller
         }
         $publication->delete();
         
-        return redirect('/home')->with('deleted', true);
+        return redirect()->back()->with('success', 'Publication deleted successfully.');
     }
     public function edit(Publication $publication){
         return view('publication.edit',compact('publication'));
@@ -48,7 +48,7 @@ class PublicationController extends Controller
     public function update(StorePostRequest $request, Publication $publication)
     {
     $publication->update($request->validated());
-    return redirect('/home');
+    return redirect('/profile');
     }
 
 

@@ -17,6 +17,7 @@
                 </ul>
             </div>
             <div class="card-body">
+                
                 <table class="table">
                     <thead>
                         <tr>
@@ -112,6 +113,11 @@
             </div>
         </div>
     </div>
+    
 </div>
+
 @endforeach
+<div class="pagination justify-content-center">
+    {{ $reports->links() }}
+</div>
 @endsection

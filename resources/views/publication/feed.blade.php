@@ -33,7 +33,7 @@
                                 
                             </div>
                         </div>
-
+                       
                         <div class="card-body">
                             <p class="card-text">{!! $publication->content !!}</p>
                             <p class="card-text">
@@ -79,9 +79,12 @@
                                 <form id="addComment" action="/publications/{{$publication->id}}/comments" method="POST" class="mt-2">
                                     @csrf
                                     <div class="d-flex">
-                                        <input type="text" class="form-control" id="comment" name="content" placeholder="Add a comment" required style="height: 30px;">
-                                        <button type="submit" class="btn btn-primary btn-sm ml-2" style="height: 30px;">Post</button>
+                                        <input type="text" class="form-control" id="content" name="content" placeholder="Add a comment" required style="height: 30px;" value="{{old('content')?? ' '}}">
+                                        <button type="submit" class="btn btn-primary btn-sm ml-2" style="height: 30px;" >Post</button>
                                     </div>
+                                    @if(session()->has('status') && session('publication_id') == $publication->id)
+                                    <div class="text-green-400">{{session()->get('status')}}</div>
+                                    @endif
                                 </form>
                             </div>
                         </div>

@@ -9,10 +9,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    
+    <!--pop over-->
+    <script srv="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
@@ -28,7 +29,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    
     <!-- Summernote CSS LINK -->
 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -64,7 +65,6 @@
         
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                   
         
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -84,11 +84,14 @@
                         @else
                             @if(Auth::user()->role =='admin')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('adminHome')}}">dashboard</a>
+                                    <a class="nav-link" href="{{ route('adminHome')}}">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('profile')}}">Profile</a>
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('home')}}">profile</a>
+                                    <a class="nav-link" href="{{ route('profile')}}">Profile</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
@@ -113,6 +116,7 @@
                 </div>
             </div>
         </nav>
+        
         
 
         <main class="py-4">

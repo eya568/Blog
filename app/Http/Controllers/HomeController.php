@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Report;
+use Illuminate\Support\Facades\DB;
+
 use DateTime;
 
 class HomeController extends Controller
@@ -27,7 +29,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Publication $publications,User $user)
+    public function indexAdmin(Publication $publications,User $user)
     {
     $user = auth()->user();
 
@@ -47,7 +49,8 @@ class HomeController extends Controller
         $likesTotal = Like::count();
         $reportsTotal = Report::count();
         $publicationsTotal = Publication::count();
-
+        $usersTotal = User::count();
+        $adminsCount = User::where('role', 'admin')->count();
     // Create an array to hold all the data
     $data = [
         'publications' => $publications,
@@ -59,15 +62,22 @@ class HomeController extends Controller
         'commentsTotal' => $commentsTotal,
         'likesTotal' => $likesTotal,
         'reportsTotal' => $reportsTotal,
-        'publicationsTotal' =>$publicationsTotal
+        'publicationsTotal' =>$publicationsTotal,
+        'usersTotal' =>$usersTotal,
+        'adminCount'=> $adminsCount
     ];
+
 
     // Pass the data array to the view
     return view('adminHome', compact('data'));
 } 
-    {
-        return view('home',compact('publications','user'));
+
     }
+
+    public function indexProfile(Publication $publications,User $user)
+    {
+        return view('profile',compact('publications','user'));
+
     }
  
     
@@ -79,11 +89,16 @@ class HomeController extends Controller
         return view('admin.users', compact('publications', 'users'));
     }
 
-    public function reportsList()
-    {
-        $publications = Publication::with(['user','reports'])->latest()->paginate(10);
-        $users = User::withCount('publications')->latest()->paginate(10);
-        return view('admin.reports', compact('publications', 'users'));
-    }
+   public function reportsList()
+{
+    $publications = Publication::with(['user', 'reports'])->latest()->paginate(10);
+    $users = User::withCount('publications')->latest()->paginate(10);
+    // Group reports by publication ID
+    $reports = DB::table('reports')
+        ->select('publication_id', DB::raw('count(*) as total_reports'))
+        ->groupBy('publication_id')
+        ->paginate(10);
+    return view('admin.reports', compact('publications', 'users', 'reports'));
+}
 
 }

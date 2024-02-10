@@ -40,5 +40,9 @@ class ReportController extends Controller
     cookie()->queue('reported_' . $publication->id.$user->id, true, $expiration); 
     return redirect()->back()->with('success', 'Post reported successfully.')->with('message', 'Reported');
 }
+    public function index()
+    {
+        
+    }
 
 }
