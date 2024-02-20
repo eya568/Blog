@@ -9,6 +9,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Mail\resetLink;
 use App\Mail\registerLink;
+use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -42,6 +44,7 @@ Route::get('/publications/{publication}/edit',[PublicationController::class, 'ed
 Route::patch('/publications/{publication}',[PublicationController::class, 'update']);
 Route::post('/publications/{publication}/comments',[CommentController::class, 'store']);
 Route::post('/publications/{publication}/reports',[ReportController::class, 'store']);
+Route::delete('reports/{publication}',[ReportController::class,'destroy']);
 Route::post('/publications/{publication}/likes',[LikeController::class, 'store']);
 
 //admin

@@ -45,16 +45,27 @@ class LoginController extends Controller
         'password' => 'required',
     ]);
 
-    // login
-    if (auth()->attempt(['email' => $input['email'], 'password' => $input['password']])) {
+    $credentials = $request->only('email', 'password');
+
+    // Attempt to authenticate the user
+    if (auth()->attempt($credentials)) {
+        // Check if the user is an admin
         if (auth()->user()->role == "admin") {
             return redirect('adminHome');
         } else {
             return redirect('/');
         }
     } else {
-        return redirect()->route('login')->with('error', 'Invalid credentials');
+        // Check if the user exists with the provided email
+        $user = \App\Models\User::where('email', $input['email'])->first();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Email is not registered.');
+        } else {
+            return redirect()->route('login')->with('error', 'Invalid password.');
+        }
     }
 }
+
 
 }

@@ -19,8 +19,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="content">content</label>
-                                <textarea id="summernote" name="content" type="text" class="form-control" placeholder="Enter your content"
-                                    value="{{ old('content') ?? '' }}"></textarea>
+                                <textarea id="summernote" name="content" type="text" class="form-control" placeholder="Enter your content">{{ old('content') ?? '' }}</textarea>
                                 <small id="contentHelp" class="form-text text-muted">write a meaningful post.</small>
                             </div>
                             @error('content')

@@ -20,7 +20,7 @@ class LikeController extends Controller
             $existingLike->delete();
         }else
         {
-        $like = Like::create([
+        Like::create([
             'user_id' => $user->id,
             'publication_id' => $publication->id,
         ]);

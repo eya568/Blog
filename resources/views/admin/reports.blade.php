@@ -22,25 +22,34 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">publication_id</th>
+                            <th scope="col">publication title</th>
                             <th scope="col">number of reports</th>
                             <th scope="col">delete Post</th>
-                            <th scope="col">details</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($publications as $publication)
                         @if($publication->reports()->count() > 0)
                         <tr>
-                            <th>{{$publication->user->id}}</th>
+                            <th>{{$publication->id}}</th>
                             <td scope="row">{{ $publication->title}}</td>
                             <td>{{$publication->reports()->count()}}</td>
                             <td>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reportConfirm{{$publication->id}}">confirm reports</button>
                             </td>
+
                             <!--details button-->
-                            <td><button type="button" class="btn btn-outline-secondary waves-effect px-3" data-bs-toggle="modal" data-bs-target="#Details{{$publication->id}}"><i class="fa fa-file-text"
-                                aria-hidden="true"></i></button></td>
+                            <td >
+                            <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#Details{{$publication->id}}"><i class="fa fa-file-text"
+                                aria-hidden="true"></i></button>
+                            <!--  modal Delete -->
+                            
+                           
+                                <button type="submit" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#confirmDelete{{$publication->id}}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                           
+                            
+                            </td>
                         </tr>
                         @endif
                         @empty
@@ -55,7 +64,7 @@
 
 <!-- Modal for Details -->
 @foreach($publications as $publication)
-<div class="modal fade bd-example-modal-lg"  id="Details{{$publication->id}}"  tabindex="-1" role="dialog" aria-labelledby="Details{{$publication->id}}Label" aria-hidden="true">
+<div class="modal fade modal-lg modal-dialog-scrollable"  id="Details{{$publication->id}}"  tabindex="-1" role="dialog" aria-labelledby="Details{{$publication->id}}Label" aria-hidden="true">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,10 +122,31 @@
             </div>
         </div>
     </div>
-    
 </div>
-
+  <!-- Modal for deleting Reports -->
+<div class="modal fade" id="confirmDelete{{$publication->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmDelete{{$publication->id}}Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDelete{{$publication->id}}Label">Confirm Reports</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the reports submitted for {{$publication->title}}?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form action="/reports/{{$publication->id}}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endforeach
+
 <div class="pagination justify-content-center">
     {{ $reports->links() }}
 </div>

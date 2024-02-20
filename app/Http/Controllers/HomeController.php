@@ -89,16 +89,19 @@ class HomeController extends Controller
         return view('admin.users', compact('publications', 'users'));
     }
 
-   public function reportsList()
-{
-    $publications = Publication::with(['user', 'reports'])->latest()->paginate(10);
-    $users = User::withCount('publications')->latest()->paginate(10);
-    // Group reports by publication ID
-    $reports = DB::table('reports')
-        ->select('publication_id', DB::raw('count(*) as total_reports'))
-        ->groupBy('publication_id')
-        ->paginate(10);
-    return view('admin.reports', compact('publications', 'users', 'reports'));
-}
+    public function reportsList()
+    {
+        // Retrieve all publications with their associated users and reports
+        $publications = Publication::with(['user', 'reports'])->latest()->paginate(10);
+        
+        // Retrieve all users with the count of their publications
+        $users = User::withCount('publications')->latest()->paginate(10);
+        
+        // Retrieve all reports
+        $reports = Report::latest()->paginate(10);
+        
+        return view('admin.reports', compact('publications', 'users', 'reports'));
+    }
+    
 
 }

@@ -17,22 +17,20 @@
                 </div>
 
                 @foreach($publications as $publication)
-                    <div class="card mb-3">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="card-title">{{ $publication->title }}</h5>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#reportModal{{$publication->id}}">
-                                    @if(!Cookie::has('reported_' . $publication->id.$user->id))
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">                        <h5 class="card-title">{{ $publication->title }}</h5>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#reportModal{{$publication->id}}">
+                                @if(app('App\Http\Controllers\ReportController')->hadReported($publication))
+                                    <i class="fa fa-flag" style="color:red" aria-hidden="true"></i>
+                                @else
                                     <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                    @else
-                                    <i class="fa fa-flag " aria-hidden="true"></i>
-                                    @endif
-                                </button>
-                                
-                            </div>
+                                @endif
+                            </button>
                         </div>
+                    </div>
+
+                   
                        
                         <div class="card-body">
                             <p class="card-text">{!! $publication->content !!}</p>
@@ -103,7 +101,12 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    @if(!Cookie::has('reported_' . $publication->id.$user->id))
+                                    @if(app('App\Http\Controllers\ReportController')->hadReported($publication))
+                                        <!-- Alert for already reported -->
+                                        <div class="alert alert-danger" role="alert">
+                                            You've already reported this post.
+                                        </div>
+                                    @else
                                         <form action="/publications/{{$publication->id}}/reports" method="POST">
                                             @csrf
                                             <div class="form-group">
@@ -112,13 +115,10 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit Report</button>
                                         </form>
-                                    @else
-                                        <!-- Alert for already reported -->
-                                        <div class="alert alert-danger" role="alert">
-                                            You've already reported this post.
-                                        </div>
                                     @endif
                                 </div>
+                                
+                                
                             </div>
                         </div>
                     </div>
