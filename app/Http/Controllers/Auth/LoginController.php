@@ -43,8 +43,17 @@ class LoginController extends Controller
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',
-    ]);
-
+        'g-recaptcha-response' => 'required',
+    ],
+    [
+        'g-recaptcha-response' => [
+            'required' => 'Please verify that you are not a robot.',
+            'captcha' => 'Captcha error! try again later or contact site admin.',
+        ],
+    ],
+);
+    
+    
     $credentials = $request->only('email', 'password');
 
     // Attempt to authenticate the user

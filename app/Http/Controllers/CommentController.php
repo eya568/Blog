@@ -24,7 +24,6 @@ class CommentController extends Controller
             'user_id' => auth()->user()->id,
             'publication_id' => $publication->id,
         ]);
-        $request->session()->flash('status','The comment was created successfully');
         return redirect()->back();
     }
 }

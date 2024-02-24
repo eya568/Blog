@@ -7,6 +7,8 @@ use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Mail\resetLink;
 use App\Mail\registerLink;
 use App\Models\Report;
@@ -44,7 +46,6 @@ Route::get('/publications/{publication}/edit',[PublicationController::class, 'ed
 Route::patch('/publications/{publication}',[PublicationController::class, 'update']);
 Route::post('/publications/{publication}/comments',[CommentController::class, 'store']);
 Route::post('/publications/{publication}/reports',[ReportController::class, 'store']);
-Route::delete('reports/{publication}',[ReportController::class,'destroy']);
 Route::post('/publications/{publication}/likes',[LikeController::class, 'store']);
 
 //admin
@@ -54,3 +55,10 @@ Route::get('/adminHome/reports',[HomeController::class,'reportsList'])->name('ad
 Route::delete('/users/{user}',[AdminController::class, 'deleteUser']);
 Route::post('/adminHome/users/{user}/changeRoles',[AdminController::class, 'ChangeRoles'])->name('adminHome.changeRoles');
 Route::get('/adminHome/users/search',[AdminController::class,'searchUser']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+Route::put('password/update', [PasswordController::class, 'update'])->name('password.update');
