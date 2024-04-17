@@ -46,7 +46,7 @@
                             <!--  modal Delete -->
                             
                            
-                                <button type="submit" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#confirmDelete{{$publication->id}}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"  data-bs-target="#confirmDelete{{$publication->id}}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                            
                             
                             </td>
@@ -136,7 +136,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <form action="/reports/{{$publication->id}}" method="POST">
+                <form action="/publications/{{$publication->id}}" method="POST">
                     @method('DELETE')
                     @csrf
                     <button type="submit" class="btn btn-primary">Delete</button>

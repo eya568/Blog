@@ -44,12 +44,12 @@
                                 </label>
                             </div>
 
-                            <div class="form-group mt-3 mb-2 text-center">
+                            <div class="form-group mt-3 mb-2">
                                 <div>
                                     {!! NoCaptcha::renderJs() !!}
                                     {!! NoCaptcha::display() !!}
                                     @if ($errors->has('g-recaptcha-response'))
-                                        <span class="help-block ">
+                                        <span class="help-block  ">
                                             <strong class="text-danger">{{ $errors->first('g-recaptcha-response') }}</strong>
                                         </span>
                                     @endif

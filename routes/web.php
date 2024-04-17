@@ -62,3 +62,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::put('password/update', [PasswordController::class, 'update'])->name('password.update');
+
+//report
+Route::post('/publications/{publication}',[ReportController::class, 'destroy'])->name('reports.delete');

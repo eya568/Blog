@@ -71,7 +71,6 @@
                         </div>
                         <div class="card-body">
                             <figure class="figure">
-                                <h5 class="card-title figure-caption">{{ $publication->title }}</h5>
                             </figure>
                            
                                 <li class="list-group-item">{!! $publication->content !!}</li>
